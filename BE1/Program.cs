@@ -13,6 +13,16 @@ builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("Mo
 
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -40,8 +50,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "User API v1");
     c.RoutePrefix = string.Empty; // Swagger tại http://localhost:5000
 });
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
