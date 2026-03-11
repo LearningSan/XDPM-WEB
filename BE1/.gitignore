@@ -1,0 +1,66 @@
+# ─── Build Output ─────────────────────────────────────────────────────────────
+bin/
+obj/
+out/
+
+# ─── .NET / Visual Studio ─────────────────────────────────────────────────────
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+*.rsuser
+
+# ─── ASP.NET ──────────────────────────────────────────────────────────────────
+wwwroot/lib/
+
+# ─── Publish Output ───────────────────────────────────────────────────────────
+publish/
+**/publish/
+*.pubxml
+*.pubxml.user
+
+# ─── NuGet ────────────────────────────────────────────────────────────────────
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ─── Secrets & Cấu hình nhạy cảm ─────────────────────────────────────────────
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+.env
+.env.*
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+*.log.*
+
+# ─── JetBrains Rider ──────────────────────────────────────────────────────────
+.idea/
+*.sln.iml
+
+# ─── VS Code ──────────────────────────────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ─── macOS ────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Test Results ─────────────────────────────────────────────────────────────
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+.dockerignore
+docker-compose.override.yml
