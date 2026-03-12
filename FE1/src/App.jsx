@@ -142,10 +142,7 @@ function App() {
                 </>
               } />
 
-              {/* Redirect / to /users */}
-              <Route path="/" element={
-                <>{window.location.pathname === '/' && window.location.replace('/users')}</>
-              } />
+              <Route path="/" element={<Navigate to="/users" replace />} />
             </Routes>
           </main>
 
