@@ -26,6 +26,8 @@ const UserCard = ({ user, onEdit, onDelete }) => {
           </button>
         </div>
       </div>
+
+     
     </article>
   );
 };
