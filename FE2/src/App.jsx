@@ -1,84 +1,119 @@
-import { useEffect, useState } from "react"
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import UserCard from "./components/UserCard"
-import UserModal from "./components/UserModal"
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import { getUsers, createUser, updateUser, deleteUser } from "./services/api"
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import UserCard from "./components/UserCard";
+import UserModal from "./components/UserModal";
+
+import { userAPI } from "./services/api";
+
+import "./App.css";
 
 function App() {
 
-  const [users, setUsers] = useState([])
-  const [modalOpen, setModalOpen] = useState(false)
-  const [editingUser, setEditingUser] = useState(null)
+  const [users, setUsers] = useState([]);
+  const [status, setStatus] = useState("loading"); 
+  // loading | success | failed
 
-  // load users
+  const [showModal, setShowModal] = useState(false);
+
   const loadUsers = async () => {
-    const res = await getUsers()
-    setUsers(res.data || [])
-  }
+    try {
+
+      setStatus("loading");
+
+      const response = await userAPI.getAllUsers();
+
+      console.log("API DATA:", response.data);
+
+      // backend có thể trả data hoặc trực tiếp array
+      const data = response.data?.data || response.data || [];
+
+      setUsers(data);
+
+      setStatus("success");
+
+    } catch (err) {
+
+      console.error(err);
+
+      setStatus("failed");
+    }
+  };
 
   useEffect(() => {
-    loadUsers()
-  }, [])
-
-  // create or update
-  const handleSave = async (data) => {
-
-    if(editingUser){
-      await updateUser(editingUser.id, data)
-    }else{
-      await createUser(data)
-    }
-
-    setModalOpen(false)
-    setEditingUser(null)
-    loadUsers()
-  }
-
-  // delete
-  const handleDelete = async (id)=>{
-    await deleteUser(id)
-    loadUsers()
-  }
+    loadUsers();
+  }, []);
 
   return (
-    <div className="layout">
+    <BrowserRouter>
 
-      <Header onCreateClick={()=>setModalOpen(true)}/>
+      <div className="app">
 
-      <div className="main">
+        <Header onCreateClick={() => setShowModal(true)} />
 
-        <Sidebar/>
+        <div className="app-container">
 
-        <div className="users-grid">
+          <Sidebar />
 
-          {users.map(user=>(
-            <UserCard
-              key={user.id}
-              user={user}
-              onEdit={(u)=>{
-                setEditingUser(u)
-                setModalOpen(true)
-              }}
-              onDelete={handleDelete}
-            />
-          ))}
+          <main className="main-content">
+
+            <Routes>
+
+              <Route path="/" element={<Navigate to="/users" />} />
+
+              <Route
+                path="/users"
+                element={
+                  <>
+                    <h1>All Users</h1>
+                    <p>Manage and view all registered users</p>
+
+                    {/* STATUS */}
+
+                    {status === "loading" && (
+                      <div className="status loading">
+                        ⏳ Loading users...
+                      </div>
+                    )}
+
+                    {status === "failed" && (
+                      <div className="status error">
+                        ❌ Failed to connect backend
+                      </div>
+                    )}
+
+                    {status === "success" && (
+                      <div className="users-grid">
+                        {users.map((user) => (
+                          <UserCard key={user.id} user={user} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                }
+              />
+
+            </Routes>
+
+          </main>
 
         </div>
 
+        {/* MODAL chỉ hiện khi click */}
+
+        {showModal && (
+          <UserModal
+            onClose={() => setShowModal(false)}
+            reloadUsers={loadUsers}
+          />
+        )}
+
       </div>
 
-      {modalOpen && (
-        <UserModal
-          user={editingUser}
-          onClose={()=>setModalOpen(false)}
-          onSave={handleSave}
-        />
-      )}
-
-    </div>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

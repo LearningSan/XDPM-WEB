@@ -1,13 +1,13 @@
-import axios from "axios"
+import axios from "axios";
 
-const API = axios.create({
-  baseURL: "https://nhom15-chieu-t6.onrender.com"
-})
+const API_URL = "https://nhom15-chieu-t6.onrender.com";
 
-export const getUsers = ()=> API.get("/users")
+export const userAPI = {
+  getAllUsers: () => axios.get(`${API_URL}/users`),
 
-export const createUser = (data)=> API.post("/users", data)
+  createUser: (data) => axios.post(`${API_URL}/users`, data),
 
-export const updateUser = (id,data)=> API.put(`/users/${id}`, data)
+  updateUser: (id, data) => axios.put(`${API_URL}/users/${id}`, data),
 
-export const deleteUser = (id)=> API.delete(`/users/${id}`)
+  deleteUser: (id) => axios.delete(`${API_URL}/users/${id}`)
+};

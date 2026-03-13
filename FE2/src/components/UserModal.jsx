@@ -1,48 +1,69 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { userAPI } from "../services/api";
 
-export default function UserModal({ user, onSave, onClose }) {
+function UserModal({ onClose, reloadUsers }) {
 
-  const [name,setName] = useState("");
-  const [email,setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  useEffect(()=>{
-    if(user){
-      setName(user.name);
-      setEmail(user.email);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      await userAPI.createUser({
+        name,
+        email,
+      });
+
+      reloadUsers();
+
+      onClose();
+
+    } catch (err) {
+
+      alert("Create user failed");
+
     }
-  },[user])
+  };
 
-  const handleSubmit = () => {
-    onSave({name,email});
-  }
+  return (
+    <div className="modal-overlay">
 
-  return(
-    <div className="modal">
+      <div className="modal">
 
-      <div className="modal-content">
+        <h2>Create User</h2>
 
-        <h3>{user ? "Edit User" : "Create User"}</h3>
+        <form onSubmit={handleSubmit}>
 
-        <input
-        value={name}
-        onChange={e=>setName(e.target.value)}
-        placeholder="Name"
-        />
+          <input
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-        <input
-        value={email}
-        onChange={e=>setEmail(e.target.value)}
-        placeholder="Email"
-        />
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <div className="modal-actions">
-          <button onClick={handleSubmit}>Save</button>
-          <button onClick={onClose}>Cancel</button>
-        </div>
+          <div className="modal-buttons">
+
+            <button type="submit">Save</button>
+
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
 
       </div>
 
     </div>
-  )
-
+  );
 }
+
+export default UserModal;

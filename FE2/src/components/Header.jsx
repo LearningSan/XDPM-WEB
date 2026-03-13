@@ -1,21 +1,28 @@
-import { FiSearch, FiBell } from "react-icons/fi";
+import React from "react";
 
-export default function Header({ onCreate }) {
+function Header({ onCreateClick }) {
   return (
     <header className="header">
-      <h2 className="logo">DevBlog</h2>
+      <div className="logo">DevBlog</div>
 
-      <div className="search">
-        <FiSearch />
-        <input placeholder="Search users..." />
-      </div>
+      <div className="header-right">
 
-      <div className="actions">
-        <button className="btn" onClick={onCreate}>
+        <div className="search-box">
+          <span className="search-icon">🔍</span>
+          <input placeholder="Search users..." />
+        </div>
+
+        <button className="create-btn" onClick={onCreateClick}>
           Create User
         </button>
-        <FiBell size={20}/>
+
+        <div className="notification">
+          🔔
+        </div>
+
       </div>
     </header>
   );
 }
+
+export default Header;
