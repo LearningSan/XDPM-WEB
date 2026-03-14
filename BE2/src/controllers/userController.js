@@ -31,21 +31,22 @@ exports.getUserById = async (req, res) => {
 // 3. Tạo User mới (POST /users)
 exports.createUser = async (req, res) => {
   try {
-    // Tìm ID lớn nhất hiện có để tự tăng (Auto-increment)
-    const lastUser = await User.findOne({}, {}, { sort: { 'id': -1 } });
-    const nextId = lastUser ? lastUser.id + 1 : 1;
+    // 1. Tìm người có ID lớn nhất (id: -1 nghĩa là xếp từ lớn đến bé)
+    const lastUser = await User.findOne().sort({ id: -1 });
+    
+    // 2. Nếu đã có người (lastUser), lấy id của họ + 1. Nếu chưa có ai, bắt đầu từ 1.
+    const nextId = (lastUser && typeof lastUser.id === 'number') ? lastUser.id + 1 : 1;
 
     const newUser = new User({
-      id: nextId,
+      id: nextId, 
       name: req.body.name,
-      username: req.body.username,
       email: req.body.email
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    res.status(201).json({ success: true, data: savedUser });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ success: false, message: err.message });
   }
 };
 
