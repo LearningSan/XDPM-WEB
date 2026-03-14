@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
     res.json({ message: 'API is running 🚀' });
 });
 
-app.listen(PORT, '0,0,0,0' ,() => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 BACKEND ĐÃ THÔNG CỔNG 0.0.0.0 TẠI PORT: ${PORT}`);
+  console.log(`Link test: https://nhom15-chieu-t6-ku61.onrender.com/users`);
 });
