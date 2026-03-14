@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  id: { // THÊM TRƯỜNG NÀY
-    type: Number, 
-    required: true, 
-    unique: true 
-  },
+  id: { type: Number, required: true }, // Thêm trường này để tìm theo id: 1, 2...
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -15,4 +11,5 @@ const userSchema = new mongoose.Schema({
   timestamps: true,
 });
 
+// Sửa dòng này: Thêm 'User' làm tham số thứ 3
 module.exports = mongoose.model('User', userSchema, 'User');
