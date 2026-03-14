@@ -1,15 +1,16 @@
-export default function UserCard({ user, onEdit, onDelete }) {
+function UserCard({ user }) {
   return (
-    <div className="card">
+    <div className="user-card">
 
       <h3>{user.name}</h3>
-      <p>{user.email}</p>
 
-      <div className="card-actions">
-        <button onClick={() => onEdit(user)}>Edit</button>
-        <button onClick={() => onDelete(user.id)}>Delete</button>
+      <div className="user-actions">
+        <button>Edit</button>
+        <button>Delete</button>
       </div>
 
     </div>
   );
 }
+
+export default UserCard;

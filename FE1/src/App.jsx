@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import UserCard from './components/UserCard';
 import UserModal from './components/UserModal';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 function App() {
@@ -142,7 +143,6 @@ function App() {
                 </>
               } />
 
-              {/* Redirect / to /users */}
               <Route path="/" element={
                 <>{window.location.pathname === '/' && window.location.replace('/users')}</>
               } />
