@@ -14,11 +14,11 @@ mongoose.connect(uri, {
   serverSelectionTimeoutMS: 10000 
 })
   .then(() => {
-    console.log("✅✅✅ KẾT NỐI THÀNH CÔNG RỒI! CHIẾN THẮNG!");
+    console.log("✅✅✅ KẾT NỐI THÀNH CÔNG RỒI!");
     process.exit(0);
   })
   .catch(err => {
     console.error("❌ Vẫn lỗi:", err.message);
-    console.log("👉 Lời khuyên cuối: Hãy bật 4G điện thoại và phát Wifi cho máy tính ngay!");
+   
     process.exit(1);
   });

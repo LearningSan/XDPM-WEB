@@ -3,18 +3,15 @@ const User = require('../models/User');
 // 1. Lấy tất cả User (GET /users)
 exports.getAllUsers = async (req, res) => {
   try {
-    console.log("Đang gọi hàm getAllUsers..."); // Thêm dòng này
-    
-    const users = await User.find();
-    console.log("Dữ liệu từ DB:", users); 
-    
-    if (users.length === 0) {
-      return res.status(200).send("Kết nối DB thành công nhưng danh sách đang TRỐNG.");
+    const { name } = req.query;
+    let query = {};
+    if (name) {
+      query.name = { $regex: name, $options: 'i' }; // Tìm kiếm không phân biệt hoa thường
     }
-    
-    return res.status(200).json(users);
+    const users = await User.find(query);
+    res.status(200).json({ success: true, count: users.length, data: users });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 // 2. Lấy 1 User theo ID số (GET /users/:id)
@@ -54,24 +51,31 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
-      { id: Number(req.params.id) },
-      req.body,
-      { new: true }
+      { id: Number(req.params.id) }, // Tìm theo ID số bạn đã sửa trong Compass
+      req.body, 
+      { new: true, runValidators: true } // Trả về bản ghi mới sau khi sửa và kiểm tra dữ liệu
     );
-    if (!updatedUser) return res.status(404).json({ message: 'Không thấy user để sửa' });
-    res.status(200).json(updatedUser);
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy người dùng" });
+    }
+
+    res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ success: false, message: err.message });
   }
 };
-
 // 5. Xóa User (DELETE /users/:id)
 exports.deleteUser = async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({ id: Number(req.params.id) });
-    if (!deletedUser) return res.status(404).json({ message: 'Không thấy user để xóa' });
-    res.status(200).json({ message: 'Đã xóa thành công' });
+
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: "Người dùng không tồn tại" });
+    }
+
+    res.status(200).json({ success: true, message: "Xóa thành công!" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
