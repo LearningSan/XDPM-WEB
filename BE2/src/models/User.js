@@ -14,14 +14,15 @@ const userSchema = new mongoose.Schema({
   },
   email: {
   type: String,
-  required: [true, 'Email không được để trống'],
+  required: [true, 'Email is required'],
   unique: true,      
   lowercase: true,   
   trim: true
   },
 password: {
     type: String,
-    required: [true, 'Mật khẩu không được để trống']
+    required: [false, 'Password is required'],
+    default:''
   },
   avatar: {
     type: String,
