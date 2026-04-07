@@ -40,5 +40,5 @@ const postSchema = new mongoose.Schema({
   timestamps: true, //  tự động sinh ra createdAt và updatedAt 
 });
 
-// Chú ý: Đặt tên collection là 'Post' (hoặc tên tùy bạn đang đặt trong DB)
+
 module.exports = mongoose.model('Post', postSchema, 'posts');

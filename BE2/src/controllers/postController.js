@@ -14,7 +14,7 @@ exports.getAllPosts = async (req, res) => {
 // 2. Lấy 1 bài viết theo _id (ObjectId của MongoDB)
 exports.getPostById = async (req, res) => {
   try {
-    // Dùng findById vì lúc này param truyền vào là chuỗi ObjectId dài loằng ngoằng
+    // Dùng findById vì param truyền vào là chuỗi ObjectId 
     const post = await Post.findById(req.params.id);
     
     // Nếu không tìm thấy hoặc bài đó đã bị xóa mềm
@@ -57,7 +57,7 @@ exports.updatePost = async (req, res) => {
 // 5. Tính năng XÓA MỀM (Soft Delete) 
 exports.deletePost = async (req, res) => {
   try {
-    // Thay vì xóa bay màu (findOneAndDelete), chỉ cập nhật isDeleted thành true
+    // Thay vì xóa (findOneAndDelete), chỉ cập nhật isDeleted thành true
     const deletedPost = await Post.findByIdAndUpdate(
       req.params.id,
       { isDeleted: true },

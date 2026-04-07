@@ -3,7 +3,6 @@ const User = require('../models/User');
 // 1. API Xem danh sách Roles (Trả về danh sách cố định luôn)
 exports.getAllRoles = (req, res) => {
   try {
-    // Vì ta lưu dạng chữ trong User, nên BE chỉ cần báo cho FE biết hệ thống có các quyền này
     const roles = [
       { roleValue: 'user', description: 'Người dùng bình thường' },
       { roleValue: 'admin', description: 'Quản trị viên hệ thống' }
@@ -19,7 +18,7 @@ exports.getAllRoles = (req, res) => {
 exports.assignRoleToUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const newRole = req.body.role; // FE sẽ gửi lên { "role": "admin" }
+    const newRole = req.body.role; 
 
     // Kiểm tra xem quyền gửi lên có hợp lệ không
     const validRoles = ['user', 'admin'];

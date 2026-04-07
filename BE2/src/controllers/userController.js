@@ -51,7 +51,7 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
-      { id: Number(req.params.id) }, // Tìm theo ID số bạn đã sửa trong Compass
+      { id: Number(req.params.id) }, 
       req.body, 
       { new: true, runValidators: true } // Trả về bản ghi mới sau khi sửa và kiểm tra dữ liệu
     );

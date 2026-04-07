@@ -4,7 +4,7 @@ const Comment = require('../models/Comment');
 exports.getAllComments = async (req, res) => {
   try {
     // Admin thì nên xem được cả bình luận bình thường lẫn bình luận đã bị xóa mềm (để kiểm tra lại nếu cần)
-    // Nếu muốn chỉ xem bình luận chưa xóa, bạn sửa thành: Comment.find({ isDeleted: false })
+    // Nếu muốn chỉ xem bình luận chưa xóa, sửa thành: Comment.find({ isDeleted: false })
     const comments = await Comment.find();
     
     res.status(200).json({ 

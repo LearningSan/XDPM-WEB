@@ -21,5 +21,5 @@ const commentSchema = new mongoose.Schema({
   timestamps: true, // Tự động có createdAt và updatedAt
 });
 
-// Chú ý: Đặt tên model là 'Comment', Mongoose sẽ tự tạo collection 'comments'
+
 module.exports = mongoose.model('Comment', commentSchema);
