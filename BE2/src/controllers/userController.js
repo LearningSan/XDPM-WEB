@@ -13,18 +13,14 @@ exports.getAllUsers = async (req, res) => {
 // 2. CREATE
 exports.createUser = async (req, res) => {
   try {
-    const { username, email } = req.body;
-
+    const { username, email } = req.body; // ✅ Đã bỏ id
     const newUser = new User({
       username,
       email
     });
-
     const savedUser = await newUser.save();
-
     res.status(201).json({ success: true, data: savedUser });
   } catch (err) {
-    console.error("CREATE ERROR:", err.message);
     res.status(400).json({ success: false, message: err.message });
   }
 };
@@ -32,6 +28,7 @@ exports.createUser = async (req, res) => {
 // 3. UPDATE
 exports.updateUser = async (req, res) => {
   try {
+   
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -39,12 +36,10 @@ exports.updateUser = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ success: false, message: "Không tìm thấy user" });
+      return res.status(404).json({ success: false, message: "Không tìm thấy người dùng" });
     }
-
     res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
-    console.error("UPDATE ERROR:", err.message);
     res.status(400).json({ success: false, message: err.message });
   }
 };
