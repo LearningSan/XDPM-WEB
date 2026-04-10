@@ -1,19 +1,7 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route,Navigate } from 'react-router-dom';
-import { userAPI } from './services/api';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import UserCard from './components/UserCard';
-import UserModal from './components/UserModal';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
-=======
 // ─── APP.JSX ─────────────────────────────────────────────────────────────────
 import { useState } from "react";
 import { AppShell } from "./components/layout";
 import { useCurrentUser, useNotifications } from "./hooks";
->>>>>>> 16a819fb749e5890d6c053ef25c625a22a52efdb
 
 import FeedPage          from "./pages/FeedPage";
 import DetailPage        from "./pages/DetailPage";
