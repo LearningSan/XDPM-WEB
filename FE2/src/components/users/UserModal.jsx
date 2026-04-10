@@ -12,7 +12,7 @@ export default function UserModal({ onClose, reload }) {
     alert("Nhập đầy đủ!");
     return;
   }
-
+  console.log(username,email);
   try {
     await userAPI.createUser({
   username,
