@@ -14,17 +14,12 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-<<<<<<< HEAD
-app.use(express.json());
-
-=======
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 
 // Kết nối Database
->>>>>>> 16a819fb749e5890d6c053ef25c625a22a52efdb
 connectDB();
 
 app.use('/users', userRoutes);
@@ -37,13 +32,8 @@ app.get('/', (req, res) => {
   res.json({ message: 'API is running 🚀' });
 });
 
-<<<<<<< HEAD
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-=======
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 
->>>>>>> 16a819fb749e5890d6c053ef25c625a22a52efdb
 });
