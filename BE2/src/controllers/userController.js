@@ -17,9 +17,10 @@ exports.getAllUsers = async (req, res) => {
 // 2. Lấy 1 User theo ID số (GET /users/:id)
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findOne( req.params.id );
+    
+    const user = await User.findOne({ id: req.params.id }); 
     if (!user) return res.status(404).json({ message: 'Không tìm thấy user' });
-res.status(200).json({ success: true, data: user }); 
+    res.status(200).json({ success: true, data: user }); 
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -47,7 +48,7 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
-      req.params.id, 
+      { id: req.params.id },
       req.body, 
       { new: true, runValidators: true } // Trả về bản ghi mới sau khi sửa và kiểm tra dữ liệu
     );
@@ -64,7 +65,7 @@ exports.updateUser = async (req, res) => {
 // 5. Xóa User (DELETE /users/:id)
 exports.deleteUser = async (req, res) => {
   try {
-    const deletedUser = await User.findOneAndDelete( req.params.id );
+    const deletedUser = await User.findOneAndDelete({ id: req.params.id });
 
     if (!deletedUser) {
       return res.status(404).json({ success: false, message: "Người dùng không tồn tại" });
