@@ -1,15 +1,35 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  id: { type: Number, required: true }, // Thêm trường này để tìm theo id: 1, 2...
-  name: {
+  
+  username: {
     type: String,
     required: [true, 'Name is required'],
     trim: true,
+  },
+  role: {
+    type: String,
+    enum: ['user',  'admin'], 
+    default: 'user'
+  },
+  email: {
+  type: String,
+  required: [true, 'Email is required'],
+  unique: true,      
+  lowercase: true,   
+  trim: true
+  },
+password: {
+    type: String,
+    
+    default:''
+  },
+  avatar: {
+    type: String,
+    default: 'https://i.pravatar.cc/150' // Ảnh mặc định nếu user chưa tải lên
   },
 }, {
   timestamps: true,
 });
 
-// Sửa dòng này: Thêm 'User' làm tham số thứ 3
-module.exports = mongoose.model('User', userSchema, 'User');
+module.exports = mongoose.model('User', userSchema, 'users');
