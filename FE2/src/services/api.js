@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://nhom15-chieu-t6-ku61.onrender.com";
+const API = "https://xdpm-web-azqx.vercel.app";
 
 const instance = axios.create({
   baseURL: API,
@@ -10,7 +10,8 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   const userId = localStorage.getItem("userId");
   if (userId) {
-    config.headers["x-user-id"] = userId;
+    config.headers["x-user-id"] = user
+    Id;
   }
   return config;
 });
