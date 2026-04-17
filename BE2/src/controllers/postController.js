@@ -48,8 +48,12 @@ exports.createPost = async (req, res) => {
     await newPost.save();
     res.status(201).json({ success: true, data: newPost });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    
+
+    res.status(400).json({ success: false, message: "Document failed validation" });
   }
+    res.status(400).json({ success: false, message: error.message });
+  
 };
 
 // 4. Cập nhật bài viết
