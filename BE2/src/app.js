@@ -10,8 +10,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../api.yaml'));
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
 const commentRoutes = require('./routes/commentRoutes');
-const roleRoutes = require('./routes/roleRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const tagRoutes = require('./routes/tagRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -41,8 +41,8 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
-app.use('/roles', roleRoutes);
 app.use('/admin', adminRoutes);
+app.use('/tags', tagRoutes);
 
 // Khởi chạy server
 app.listen(PORT, '0.0.0.0', () => {

@@ -10,12 +10,50 @@ servers:
     description: Main server
   - url: https://nhom15-chieu-t6-ku61.onrender.com
     description: Test server
-    
+
+
+#Authorize and Roles    
+components:
+  securitySchemes:
+    bearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 
 paths:
   # ==========================================
   # 1. USERS API
   # ==========================================
+
+#lấy token
+  /users/login:
+    post:
+      summary: Đăng nhập vào hệ thống
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: "Email của tài khoản"
+                  example: "admin@example.com"
+                password:
+                  type: string
+                  description: "Mật khẩu"
+                  example: "123456"
+      responses:
+        200:
+          description: Đăng nhập thành công, trả về JWT Token
+        401:
+          description: Sai mật khẩu
+        404:
+          description: Email không tồn tại
+
   /users:
     get:
       summary: Lấy danh sách tất cả người dùng
@@ -26,10 +64,33 @@ paths:
     post:
       summary: Tạo người dùng mới
       tags: [Users]
+      requestBody:               
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:          
+                  type: string
+                name:
+                  type: string
+                role:
+                  type: string
+                  description: "Nhập 'admin' nếu muốn tạo tài khoản quản trị"
+                bio:
+                  type: string
+                location:
+                  type: string
       responses:
         201:
-          description: Đã tạo người dùng thành công
-
+          description: Tạo thành công
+        400:
+          description: Lỗi dữ liệu
   /users/{id}:
     get:
       summary: Lấy chi tiết người dùng theo ID
@@ -63,7 +124,15 @@ paths:
                   type: string
                 email:
                   type: string
-                password:
+                passwordHash:
+                  type: string
+                name:
+                  type: string
+                bio:
+                  type: string
+                avatar:
+                  type: string
+                location:
                   type: string
       responses:
         200:
@@ -85,45 +154,9 @@ paths:
         404:
           description: Không tìm thấy người dùng
 
+ 
   # ==========================================
-  # 2. ROLES API
-  # ==========================================
-  /roles:
-    get:
-      summary: Lấy danh sách tất cả các Role
-      tags: [Roles]
-      responses:
-        200:
-          description: Trả về danh sách các quyền
-
-  /roles/assign/{userId}:
-    put:
-      summary: Gán quyền cho người dùng (Chỉ Admin)
-      tags: [Roles]
-      
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                roleId:
-                  type: string
-      responses:
-        200:
-          description: Cập nhật quyền thành công
-        403:
-          description: Forbidden - Không có quyền Admin
-
-  # ==========================================
-  # 3. POSTS API
+  # 2. POSTS API
   # ==========================================
   /posts:
     get:
@@ -142,10 +175,30 @@ paths:
             schema:
               type: object
               properties:
+                authorId:
+                  type: string
+                  description: "ID của tác giả (Lấy từ bảng Users)"
                 title:
                   type: string
+                slug:
+                  type: string
+                  description: "Đường dẫn URL (VD: top-10-tips)"
                 content:
                   type: string
+                coverImage:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                status:
+                  type: string
+                  enum: [published, draft, pending]
+                  default: published
+                visibility:
+                  type: string
+                  enum: [public, private]
+                  default: public
       responses:
         201:
           description: Tạo bài viết thành công
@@ -172,11 +225,36 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                slug:
+                  type: string
+                content:
+                  type: string
+                coverImage:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                status:
+                  type: string
+                  enum: [published, draft, pending]
+                visibility:
+                  type: string
+                  enum: [public, private]
       responses:
         200:
           description: Cập nhật thành công
     delete:
-      summary: Xóa bài viết
+      summary: Xóa mềm bài viết
       tags: [Posts]
       parameters:
         - in: path
@@ -189,19 +267,44 @@ paths:
           description: Xóa thành công
 
   # ==========================================
-  # 4. COMMENTS API
+  # 3. COMMENTS API
   # ==========================================
   /comments:
     get:
-      summary: Lấy danh sách tất cả bình luận
+      summary: Lấy danh sách tất cả bình luận (Admin)
       tags: [Comments]
       responses:
         200:
           description: Thành công
+    post:
+      summary: Thêm một bình luận mới
+      tags: [Comments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                postId:
+                  type: string
+                  description: "ID của bài viết đang được bình luận"
+                authorId:
+                  type: string
+                  description: "ID của người đang bình luận"
+                parentId:
+                  type: string
+                  description: "ID của bình luận gốc (Nếu đây là câu trả lời/reply. Để trống nếu là bình luận mới)"
+                content:
+                  type: string
+                  description: "Nội dung bình luận"
+      responses:
+        201:
+          description: Bình luận thành công
 
   /comments/{id}:
     delete:
-      summary: Xóa bình luận
+      summary: Xóa bình luận (Admin)
       tags: [Comments]
       parameters:
         - in: path
@@ -212,17 +315,48 @@ paths:
       responses:
         200:
           description: Xóa thành công
-
   # ==========================================
-  # 5. ADMIN API
+  # 4. ADMIN API
   # ==========================================
   /admin/stats:
     get:
       summary: Xem thống kê hệ thống (Chỉ Admin)
       tags: [Admin]
-      
+      security:            
+        - bearerAuth: []
       responses:
         200:
           description: Trả về dữ liệu thống kê
         403:
           description: Không có quyền truy cập
+  /admin/users/{id}/ban:
+    put:
+      summary: Khóa tài khoản người dùng (Admin)
+      tags: [Admin]
+      security:             
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Đã khóa thành công
+
+  /admin/users/{id}/unban:
+    put:
+      summary: Mở khóa tài khoản (Admin)
+      tags: [Admin]
+      security:             
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Đã mở khóa thành công        
