@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace BE1.DTOs.Auth
 {
+<<<<<<< HEAD
         public class UserResponse
+=======
+    public class UserResponse
+>>>>>>> dev
     {
         public string Id { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
@@ -17,6 +21,7 @@ namespace BE1.DTOs.Auth
         public string Role { get; set; } = "user";
         public int FollowersCount { get; set; }
         public int FollowingCount { get; set; }
+        public bool IsBanned { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 
