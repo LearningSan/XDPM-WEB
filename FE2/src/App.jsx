@@ -1,27 +1,49 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import Sidebar from "./components/layout/Sidebar";
-import Rightbar from "./components/layout/Rightbar";
-
-import UsersPage from "./pages/UsersPage";
-import RolesPage from "./pages/RolesPage";
-import CommentsPage from "./pages/CommentsPage";
+import { Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Rightbar from "./components/Rightbar";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Posts from "./pages/Posts";
+import Comments from "./pages/Comments";
+import Tags from "./pages/Tags";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
+import { useState } from "react";
 
-function App() {
+export default function App() {
+  const [stats, setStats] = useState({});
+  const token = localStorage.getItem("token");
+
   return (
-    <BrowserRouter> 
-      <div className="container"> 
-        <Sidebar /> 
-        <main className="main-content"> 
-        <Routes> <Route path="/" element={<Navigate to="/users" />} /> 
-        <Route path="/users" element={<UsersPage />} /> 
-        <Route path="/roles" element={<RolesPage />} /> 
-        <Route path="/comments" element={<CommentsPage />} /> 
-        </Routes> </main> <Rightbar /> 
-      </div> 
-    </BrowserRouter>
+    <Routes>
+      {/* LOGIN */}
+      <Route path="/login" element={<Login />} />
+
+      {/* PRIVATE ROUTES */}
+      <Route
+        path="/*"
+        element={
+          <ProtectedRoute>
+            <div className="layout">
+              <Sidebar />
+
+              <div className="content">
+                <Routes>
+                  <Route path="/" element={<Dashboard setStats={setStats} stats={stats} />} />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/posts" element={<Posts />} />
+                  <Route path="/comments" element={<Comments />} />
+                  <Route path="/tags" element={<Tags />} />
+                </Routes>
+              </div>
+
+              <Rightbar stats={stats} />
+            </div>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
-export default App;

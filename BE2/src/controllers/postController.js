@@ -4,7 +4,7 @@ const Post = require('../models/Post');
 exports.getAllPosts = async (req, res) => {
   try {
     // Luôn luôn lọc bỏ những bài đã bị "xóa mềm"
-    const posts = await Post.find({ isDeleted: false });
+    const posts = await Post.find({ isDeleted:{$ne: true}  });
     res.status(200).json({ success: true, count: posts.length, data: posts });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -30,12 +30,30 @@ exports.getPostById = async (req, res) => {
 // 3. Tạo bài viết mới (không cần tính nextId)
 exports.createPost = async (req, res) => {
   try {
-    const newPost = new Post(req.body);
-    const savedPost = await newPost.save();
-    res.status(201).json({ success: true, data: savedPost });
-  } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    
+    const { title, slug, content, coverImage, tags, status, visibility, authorId } = req.body;
+
+    
+    const newPost = new Post({
+      authorId: authorId, 
+      title: title,
+      slug: slug,
+      content: content,
+      coverImage: coverImage,
+      tags: tags,
+      status: status,
+      visibility: visibility
+    });
+
+    await newPost.save();
+    res.status(201).json({ success: true, data: newPost });
+  } catch (error) {
+    
+
+    res.status(400).json({ success: false, message: "Document failed validation" });
   }
+    res.status(400).json({ success: false, message: error.message });
+  
 };
 
 // 4. Cập nhật bài viết
