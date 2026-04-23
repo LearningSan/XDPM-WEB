@@ -12,6 +12,12 @@ async function request(path, options = {}) {
     ...options,
   });
 
+  if (res.status === 429) {
+    console.warn("🔥 429 - retrying...");
+    await new Promise(r => setTimeout(r, 1000));
+    return request(path, options);
+  }
+
   const text = await res.text();
 
   try {
