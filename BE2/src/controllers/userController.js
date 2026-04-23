@@ -43,6 +43,7 @@ exports.createUser = async (req, res) => {
 
     // Tạo user mới với passwordHash và các trường mở rộng
     const newUser = new User({
+
       username,
       email,
       passwordHash: hashedPassword,
@@ -65,6 +66,7 @@ exports.updateUser = async (req, res) => {
       req.params.id,
       req.body, 
       { new: true, runValidators: true }
+
     );
 
     if (!updatedUser) {
@@ -79,7 +81,10 @@ exports.updateUser = async (req, res) => {
 // 4. DELETE
 exports.deleteUser = async (req, res) => {
   try {
+
     const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+
 
     if (!deletedUser) {
       return res.status(404).json({ success: false, message: "User không tồn tại" });
