@@ -1,10 +1,7 @@
 const BASE_URL = "https://xdpm-web-pv.onrender.com";
 
 async function request(path, options = {}) {
-  
-  const cleanPath = path.startsWith("/")
-    ? path.slice(1)
-    : path;
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
 
   const res = await fetch(`${BASE_URL}/api/${cleanPath}`, {
     credentials: "include",
@@ -15,7 +12,13 @@ async function request(path, options = {}) {
     ...options,
   });
 
-  return res.json();
+  const text = await res.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
 }
 
 let cachedProfile = null;
