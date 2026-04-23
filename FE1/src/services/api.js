@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://xdpm-web-pv.onrender.com";
 
 async function request(path, options = {}) {
   
